@@ -3988,7 +3988,11 @@ inline napi_status ThreadSafeFunction::Release() {
 
 inline napi_status ThreadSafeFunction::Abort() {
   if (*_tsfn) {
-    return napi_release_threadsafe_function(*_tsfn, napi_tsfn_abort);
+    napi_status res = napi_release_threadsafe_function(*_tsfn, napi_tsfn_abort);
+    if (res == napi_ok) {
+      _tsfn.reset();
+    }
+    return res;
   }
   return napi_ok;
 }
