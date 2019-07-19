@@ -3973,15 +3973,15 @@ inline napi_status ThreadSafeFunction::NonBlockingCall(
 }
 
 inline napi_status ThreadSafeFunction::Acquire() const {
-  return napi_acquire_threadsafe_function(*_tsfn);
+  return _tsfn && napi_acquire_threadsafe_function(*_tsfn);
 }
 
 inline napi_status ThreadSafeFunction::Release() {
-  return napi_release_threadsafe_function(*_tsfn, napi_tsfn_release);
+  return _tsfn && napi_release_threadsafe_function(*_tsfn, napi_tsfn_release);
 }
 
 inline napi_status ThreadSafeFunction::Abort() {
-  return napi_release_threadsafe_function(*_tsfn, napi_tsfn_abort);
+  return _tsfn && napi_release_threadsafe_function(*_tsfn, napi_tsfn_abort);
 }
 
 inline ThreadSafeFunction::ConvertibleContext
