@@ -3973,15 +3973,24 @@ inline napi_status ThreadSafeFunction::NonBlockingCall(
 }
 
 inline napi_status ThreadSafeFunction::Acquire() const {
-  return napi_acquire_threadsafe_function(*_tsfn);
+  if (_tsfn) {
+    return napi_acquire_threadsafe_function(*_tsfn);
+  }
+  return napi_ok;
 }
 
 inline napi_status ThreadSafeFunction::Release() {
-  return napi_release_threadsafe_function(*_tsfn, napi_tsfn_release);
+  if (_tsfn) {
+    return napi_release_threadsafe_function(*_tsfn, napi_tsfn_release);
+  }
+  return napi_ok;
 }
 
 inline napi_status ThreadSafeFunction::Abort() {
-  return napi_release_threadsafe_function(*_tsfn, napi_tsfn_abort);
+  if (_tsfn) {
+    return napi_release_threadsafe_function(*_tsfn, napi_tsfn_abort);
+  }
+  return napi_ok;
 }
 
 inline ThreadSafeFunction::ConvertibleContext
